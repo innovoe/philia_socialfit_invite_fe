@@ -8820,11 +8820,7 @@
       });
 
       dialogs.forEach((dialog) => {
-        dialog.addEventListener("click", (event) => {
-          // Backdrop only. Enter on a form can synthesize a click at 0,0 and
-          // would look "outside" if we used getBoundingClientRect().
-          if (event.target === dialog) dialog.close();
-        });
+        dialog.addEventListener("cancel", (event) => event.preventDefault());
       });
 
       const createApplicationReference = () => {
