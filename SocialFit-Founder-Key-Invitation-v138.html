@@ -8410,7 +8410,7 @@
 
       <div class="chat-log" id="chatLog" aria-live="polite" style="display:none"></div>
 
-      <form class="ask-composer" id="askForm">
+      <form class="ask-composer" id="askForm" action="#" method="post">
         <label class="sr-only" for="askInput">Ask SocialFit a question</label>
         <input class="ask-input" id="askInput" type="text" autocomplete="off" maxlength="180" placeholder="Ask anything about SocialFit…">
         <button class="ask-mic" id="askMic" type="button" aria-label="Start a voice conversation">
@@ -8821,10 +8821,9 @@
 
       dialogs.forEach((dialog) => {
         dialog.addEventListener("click", (event) => {
-          const rect = dialog.getBoundingClientRect();
-          const outside = event.clientX < rect.left || event.clientX > rect.right ||
-            event.clientY < rect.top || event.clientY > rect.bottom;
-          if (outside) dialog.close();
+          // Backdrop only. Enter on a form can synthesize a click at 0,0 and
+          // would look "outside" if we used getBoundingClientRect().
+          if (event.target === dialog) dialog.close();
         });
       });
 
@@ -9070,6 +9069,12 @@
         input.placeholder = "Ask anything about SocialFit…";
       }
 
+      function restoreAskSession() {
+        if (!log.children.length) return;
+        switchToChat();
+        log.scrollTop = log.scrollHeight;
+      }
+
       function showChips(labels, currentKey) {
         const old = log.querySelector(".ask-suggestions");
         if (old) old.remove();
@@ -9170,6 +9175,7 @@
 
       form.addEventListener("submit", (event) => {
         event.preventDefault();
+        event.stopPropagation();
         ask(input.value);
       });
 
@@ -9189,10 +9195,14 @@
       back.addEventListener("click", showHome);
       dialog.addEventListener("close", () => {
         input.disabled = false;
-        window.setTimeout(showHome, 180);
+        form.querySelector(".ask-send").disabled = false;
+        responding = false;
       });
       document.querySelector('[data-open-dialog="askDialog"]').addEventListener("click", () => {
-        window.setTimeout(() => input.focus(), 120);
+        window.setTimeout(() => {
+          restoreAskSession();
+          input.focus();
+        }, 120);
       });
     })();
   </script>
