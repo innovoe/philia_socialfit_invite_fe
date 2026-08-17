@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Origins · SocialFit Dubai First Wave</title>
   <script>
-    // Same-origin when this page is served on the API host.
-    // Separate static host: set window.SOCIALFIT_API_BASE or ?api=https://your-api
+    // Production invite host is static nginx; API lives on api.philia.life.
+    // Override with window.SOCIALFIT_API_BASE or ?api=http://localhost:8000
     (function () {
       const fromQuery = new URLSearchParams(window.location.search).get("api");
-      window.SOCIALFIT_API_BASE = window.SOCIALFIT_API_BASE || fromQuery || "";
+      window.SOCIALFIT_API_BASE = window.SOCIALFIT_API_BASE || fromQuery || "https://api.philia.life";
       window.socialfitApiUrl = function (path) {
         const base = String(window.SOCIALFIT_API_BASE || "").replace(/\/$/, "");
         return base + path;
