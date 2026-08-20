@@ -7064,7 +7064,6 @@
     #interestDialog {
       position: relative;
       isolation: isolate;
-      display: flex;
       flex-direction: column;
       width: min(680px, calc(100vw - 32px));
       max-height: min(760px, calc(100vh - 32px));
@@ -7081,6 +7080,10 @@
         inset 0 0 0 6px rgba(89, 76, 61, .13);
       backdrop-filter: blur(28px) saturate(118%);
       -webkit-backdrop-filter: blur(28px) saturate(118%);
+    }
+
+    #interestDialog[open] {
+      display: flex;
     }
 
     #interestDialog::after {
