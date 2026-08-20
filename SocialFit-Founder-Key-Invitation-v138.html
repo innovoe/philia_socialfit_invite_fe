@@ -7064,7 +7064,11 @@
     #interestDialog {
       position: relative;
       isolation: isolate;
+      display: flex;
+      flex-direction: column;
       width: min(680px, calc(100vw - 32px));
+      max-height: min(760px, calc(100vh - 32px));
+      overflow: hidden;
       border: 1px solid rgba(57, 51, 44, .54);
       border-radius: 4px;
       background:
@@ -7083,7 +7087,7 @@
       content: "";
       position: absolute;
       inset: 10px;
-      z-index: 0;
+      z-index: 2;
       border: 1px solid rgba(91, 77, 60, .18);
       border-radius: 1px;
       pointer-events: none;
@@ -7099,6 +7103,10 @@
     #interestDialog .dialog-inner {
       position: relative;
       z-index: 1;
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      overscroll-behavior: contain;
       padding: 42px 44px 40px;
     }
 
@@ -7488,6 +7496,7 @@
 
       #interestDialog {
         width: 100vw;
+        max-height: min(94dvh, 840px);
         border-radius: 5px 5px 0 0;
       }
 
