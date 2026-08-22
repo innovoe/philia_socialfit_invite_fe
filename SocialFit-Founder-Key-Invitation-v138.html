@@ -5608,7 +5608,8 @@
       z-index: 10;
       inset: 0;
       display: grid;
-      grid-template-rows: auto 1fr auto;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      min-height: 0;
       padding: clamp(30px, 5vh, 56px) clamp(28px, 4vw, 58px);
       background: #000000;
       color: #f4f0e5;
@@ -5641,11 +5642,13 @@
     .left-film-edition {
       display: flex;
       align-items: center;
+      flex-shrink: 0;
       gap: 13px;
       color: rgba(244, 240, 229, .54);
       font: 600 .54rem/1.2 Montserrat, Inter, system-ui, sans-serif;
       letter-spacing: .17em;
       text-transform: uppercase;
+      white-space: nowrap;
     }
 
     .left-film-title-lockup {
@@ -5693,17 +5696,21 @@
       display: grid;
       place-items: center;
       min-height: 0;
-      padding-block: clamp(24px, 4.5vh, 50px);
+      overflow: hidden;
+      padding-block: clamp(16px, 3vh, 40px);
+      container-type: size;
     }
 
     .left-film-slot .keys-film-card {
       display: grid;
       place-items: center;
-      width: 100%;
-      height: 100%;
-      max-height: none;
+      width: min(100cqw, calc(100cqh * 4 / 5));
+      height: min(100cqh, calc(100cqw * 5 / 4));
+      max-width: 100%;
+      max-height: 100%;
       margin: 0;
-      aspect-ratio: auto;
+      aspect-ratio: 4 / 5;
+      overflow: hidden;
     }
 
     .left-film-slot .keys-film-card::before,
@@ -5716,8 +5723,9 @@
     .left-film-slot .keys-film-stage {
       position: relative;
       inset: auto;
-      width: auto;
-      height: min(68vh, 720px);
+      width: 100%;
+      height: 100%;
+      max-width: 100%;
       max-height: 100%;
       aspect-ratio: 4 / 5;
       border: 1px solid rgba(226, 222, 214, .24);
@@ -5729,6 +5737,10 @@
         0 0 0 4px #050505,
         0 0 0 5px rgba(222, 218, 210, .12),
         0 24px 60px rgba(0, 0, 0, .48);
+    }
+
+    .left-film-slot .keys-film-main {
+      object-fit: contain;
     }
 
     body.is-unlocking .left,
@@ -5782,10 +5794,6 @@
       .left-film-host {
         padding: 28px clamp(22px, 7vw, 56px);
       }
-
-      .left-film-slot .keys-film-stage {
-        height: min(66vh, 620px);
-      }
     }
 
     @media (max-width: 600px) {
@@ -5823,11 +5831,10 @@
       }
 
       .left-film-slot {
-        padding-block: 20px;
+        padding-block: 16px;
       }
 
       .left-film-slot .keys-film-stage {
-        height: min(59vh, 520px);
         box-shadow:
           inset 0 1px 0 rgba(255, 255, 255, .08),
           inset 0 -1px 0 rgba(0, 0, 0, .72),
