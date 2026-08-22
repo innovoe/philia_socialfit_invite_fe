@@ -7455,42 +7455,28 @@
     }
 
     #interestDialog .checkbox-ui {
-      width: 18px;
-      height: 24px;
-      margin-top: 0;
+      display: grid;
+      place-items: start center;
+      width: 14px;
+      height: 22px;
+      margin-top: 1px;
       border: 0;
       border-radius: 0;
       background: transparent;
       box-shadow: none;
     }
 
-    #interestDialog .checkbox-ui::before {
-      content: "";
-      position: absolute;
-      top: 2px;
-      left: 5px;
-      width: 8px;
-      height: 8px;
-      border: 1px solid rgba(82, 70, 56, .44);
-      border-radius: 50%;
-      background: rgba(232, 224, 210, .62);
-      box-shadow:
-        -1px -1px .3px rgba(255, 255, 255, .96),
-        1px 1px .6px rgba(91, 73, 52, .20);
+    #interestDialog .checkbox-ui::before,
+    #interestDialog .checkbox-ui::after {
+      content: none;
     }
 
-    #interestDialog .checkbox-ui::after {
-      content: "";
-      position: absolute;
-      top: 10px;
-      left: 6px;
-      width: 6px;
-      height: 11px;
-      border: 0;
-      background: rgba(216, 205, 187, .68);
-      clip-path: polygon(25% 0, 75% 0, 100% 100%, 0 100%);
+    #interestDialog .checkbox-keyhole {
+      display: block;
+      width: 12px;
+      height: 20px;
+      fill: rgba(82, 70, 56, .42);
       transform: none;
-      box-shadow: 1px 1px .5px rgba(91, 73, 52, .18);
     }
 
     #interestDialog input:checked + .checkbox-ui {
@@ -7499,13 +7485,8 @@
       box-shadow: none;
     }
 
-    #interestDialog input:checked + .checkbox-ui::before,
-    #interestDialog input:checked + .checkbox-ui::after {
-      border-color: rgba(12, 13, 15, .92);
-      background: rgba(24, 25, 28, .94);
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, .15),
-        0 2px 4px rgba(27, 25, 22, .18);
+    #interestDialog input:checked + .checkbox-ui .checkbox-keyhole {
+      fill: rgba(24, 25, 28, .94);
     }
 
     #interestDialog input:focus-visible + .checkbox-ui {
@@ -8602,7 +8583,7 @@
             <p class="form-choices-label" id="beforeApplyLabel">Before you apply</p>
             <label class="choice-card">
               <input type="checkbox" name="dubai_residency_confirmation" value="confirmed" required>
-              <span class="checkbox-ui" aria-hidden="true"></span>
+              <span class="checkbox-ui" aria-hidden="true"><svg class="checkbox-keyhole" viewBox="9 7 18 27" aria-hidden="true"><path d="M18 9a5.5 5.5 0 0 1 3.2 10L25 31H11l3.8-12A5.5 5.5 0 0 1 18 9Z"/></svg></span>
               <span class="choice-card-copy">
                 <span class="choice-card-title">I confirm that I currently live in Dubai.</span>
                 <span class="choice-card-note">Origins is SocialFit's Dubai First Wave and is currently open to Dubai residents.</span>
@@ -8610,21 +8591,21 @@
             </label>
             <label class="choice-card">
               <input type="checkbox" name="founder_key_nomination_acknowledgement" value="acknowledged" required>
-              <span class="checkbox-ui" aria-hidden="true"></span>
+              <span class="checkbox-ui" aria-hidden="true"><svg class="checkbox-keyhole" viewBox="9 7 18 27" aria-hidden="true"><path d="M18 9a5.5 5.5 0 0 1 3.2 10L25 31H11l3.8-12A5.5 5.5 0 0 1 18 9Z"/></svg></span>
               <span class="choice-card-copy">
                 <span class="choice-card-title">I understand that during onboarding I will receive three Philia Founder Keys to nominate three people in Dubai who I believe would strengthen the network.</span>
               </span>
             </label>
             <label class="choice-card">
               <input type="checkbox" name="founder_key_contact_consent" value="yes" required>
-              <span class="checkbox-ui" aria-hidden="true"></span>
+              <span class="checkbox-ui" aria-hidden="true"><svg class="checkbox-keyhole" viewBox="9 7 18 27" aria-hidden="true"><path d="M18 9a5.5 5.5 0 0 1 3.2 10L25 31H11l3.8-12A5.5 5.5 0 0 1 18 9Z"/></svg></span>
               <span class="choice-card-copy">
                 <span class="choice-card-title">I agree to P Labs processing my application details and WhatsApp number to assess my Founder Key application and, if selected, deliver my private onboarding link and unique code. I can withdraw this request at any time.</span>
               </span>
             </label>
             <label class="choice-card optional">
               <input type="checkbox" name="featured_profile_opt_in" value="yes">
-              <span class="checkbox-ui" aria-hidden="true"></span>
+              <span class="checkbox-ui" aria-hidden="true"><svg class="checkbox-keyhole" viewBox="9 7 18 27" aria-hidden="true"><path d="M18 9a5.5 5.5 0 0 1 3.2 10L25 31H11l3.8-12A5.5 5.5 0 0 1 18 9Z"/></svg></span>
               <span class="choice-card-copy">
                 <span class="choice-card-title">I want to be a featured profile in the network.<span class="choice-card-tag">Optional</span></span>
               </span>
