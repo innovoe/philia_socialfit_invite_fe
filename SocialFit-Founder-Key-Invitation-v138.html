@@ -1658,6 +1658,16 @@
     }
 
     .follow-handoff {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 118px;
+      grid-template-areas:
+        "kicker qr"
+        "title qr"
+        "copy qr"
+        "cta cta"
+        "note note";
+      align-items: start;
+      column-gap: 18px;
       max-width: 480px;
       margin: 14px auto 0;
       padding: 22px 24px 20px;
@@ -1671,6 +1681,7 @@
     }
 
     .follow-kicker {
+      grid-area: kicker;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -1693,6 +1704,7 @@
     }
 
     .follow-handoff h4 {
+      grid-area: title;
       margin: 12px 0 0;
       color: #202034;
       font-family: Montserrat, Inter, sans-serif;
@@ -1703,13 +1715,37 @@
     }
 
     .follow-handoff > p:not(.follow-kicker):not(.follow-note) {
+      grid-area: copy;
       margin: 9px 0 0;
       color: rgba(49, 51, 54, .62);
       font-size: .84rem;
       line-height: 1.58;
     }
 
+    .follow-qr {
+      grid-area: qr;
+      align-self: center;
+      display: grid;
+      place-items: center;
+      width: 118px;
+      height: 118px;
+      padding: 8px;
+      border: 1px solid rgba(65, 58, 50, .22);
+      border-radius: 8px;
+      background: #fffdf8;
+      box-shadow:
+        inset 0 0 0 3px rgba(255, 255, 255, .7),
+        0 10px 22px rgba(32, 32, 52, .06);
+    }
+
+    .follow-qr-code {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
     .follow-cta {
+      grid-area: cta;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -1757,6 +1793,7 @@
     }
 
     .follow-note {
+      grid-area: note;
       margin: 10px 4px 0;
       color: rgba(49, 51, 54, .46);
       font-size: .70rem;
@@ -4531,9 +4568,24 @@
       }
 
       .follow-handoff {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "kicker"
+          "title"
+          "copy"
+          "qr"
+          "cta"
+          "note";
         margin-top: 12px;
         padding: 18px 17px 16px;
         border-radius: 20px;
+      }
+
+      .follow-qr {
+        width: 108px;
+        height: 108px;
+        justify-self: center;
+        margin-top: 12px;
       }
 
       .follow-handoff h4 {
@@ -8852,6 +8904,9 @@
           <p class="follow-kicker">Instagram</p>
           <h4>Follow us on Instagram.</h4>
           <p>Stay close to Origins and the Dubai First Wave.</p>
+          <a class="follow-qr" href="https://www.instagram.com/socialfit_uae/" target="_blank" rel="noopener noreferrer" aria-label="Scan to follow @socialfit_uae on Instagram">
+            <svg class="follow-qr-code" role="img" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="124" height="124"><g transform="scale(4)"><path fill="#fffdf8" d="M0 0h31v31h-31z"/><path class="qrline" stroke="#1a1b1f" d="M1 1.5h7m1 0h3m1 0h2m3 0h2m3 0h7m-29 1h1m5 0h1m1 0h1m4 0h1m2 0h5m1 0h1m5 0h1m-29 1h1m1 0h3m1 0h1m1 0h2m2 0h3m5 0h1m1 0h1m1 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m2 0h2m2 0h1m1 0h1m1 0h1m1 0h2m1 0h1m1 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m1 0h1m2 0h1m2 0h3m1 0h3m1 0h1m1 0h3m1 0h1m-29 1h1m5 0h1m2 0h2m5 0h1m3 0h1m1 0h1m5 0h1m-29 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-20 1h5m2 0h1m2 0h1m-20 1h1m2 0h10m1 0h2m1 0h1m3 0h1m2 0h1m1 0h3m-27 1h1m1 0h1m2 0h2m2 0h1m2 0h2m1 0h3m3 0h2m1 0h2m-28 1h3m3 0h2m4 0h1m2 0h3m3 0h3m2 0h1m-27 1h5m2 0h1m1 0h1m2 0h1m1 0h1m1 0h2m3 0h2m2 0h1m2 0h1m-29 1h3m1 0h6m2 0h1m1 0h1m1 0h1m1 0h3m1 0h2m4 0h1m-27 1h4m3 0h4m1 0h5m3 0h1m1 0h5m-29 1h1m3 0h5m2 0h1m2 0h4m1 0h1m3 0h1m2 0h1m1 0h1m-29 1h4m3 0h6m2 0h1m3 0h2m2 0h2m1 0h1m1 0h1m-24 1h4m1 0h1m1 0h1m1 0h2m9 0h1m-26 1h4m3 0h2m1 0h2m3 0h1m1 0h1m1 0h3m2 0h1m1 0h2m-28 1h3m1 0h7m1 0h5m1 0h2m1 0h2m2 0h1m2 0h1m-29 1h2m2 0h2m2 0h2m3 0h2m1 0h1m4 0h6m-27 1h3m3 0h5m1 0h2m2 0h2m1 0h9m-20 1h1m3 0h4m1 0h2m1 0h1m3 0h2m-26 1h7m1 0h1m4 0h1m1 0h2m2 0h2m1 0h1m1 0h2m-26 1h1m5 0h1m1 0h1m3 0h2m2 0h2m1 0h2m3 0h1m3 0h1m-29 1h1m1 0h3m1 0h1m1 0h1m2 0h3m1 0h2m2 0h7m1 0h1m-28 1h1m1 0h3m1 0h1m1 0h1m1 0h1m1 0h1m1 0h3m1 0h1m1 0h2m1 0h1m4 0h1m-29 1h1m1 0h3m1 0h1m2 0h2m1 0h4m1 0h3m3 0h2m1 0h3m-29 1h1m5 0h1m3 0h1m2 0h2m1 0h1m4 0h3m1 0h2m1 0h1m-29 1h7m1 0h1m1 0h1m1 0h2m5 0h3m2 0h2"/></g></svg>
+          </a>
           <a class="follow-cta" href="https://www.instagram.com/socialfit_uae/" target="_blank" rel="noopener noreferrer">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 3h9A4.5 4.5 0 0 1 21 7.5v9A4.5 4.5 0 0 1 16.5 21h-9A4.5 4.5 0 0 1 3 16.5v-9A4.5 4.5 0 0 1 7.5 3zm0 1.7A2.8 2.8 0 0 0 4.7 7.5v9A2.8 2.8 0 0 0 7.5 19.3h9a2.8 2.8 0 0 0 2.8-2.8v-9A2.8 2.8 0 0 0 16.5 4.7h-9zM12 8.1A3.9 3.9 0 1 1 8.1 12 3.9 3.9 0 0 1 12 8.1zm0 1.7A2.2 2.2 0 1 0 14.2 12 2.2 2.2 0 0 0 12 9.8zm4.85-2.55a1.05 1.05 0 1 1-1.05 1.05 1.05 1.05 0 0 1 1.05-1.05z"/></svg>
             <span>Follow us</span>
