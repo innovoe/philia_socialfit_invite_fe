@@ -2996,7 +2996,16 @@
         line-height: 1;
       }
 
-      .corner-btn span { display: none; }
+      .corner-btn span {
+        display: inline-block;
+        max-width: 0;
+        overflow: hidden;
+        opacity: 0;
+        white-space: nowrap;
+        font-size: .7rem;
+        font-weight: 650;
+        letter-spacing: -.01em;
+      }
 
       dialog,
       #askDialog {
@@ -3403,10 +3412,39 @@
         top: calc(14px + env(safe-area-inset-top));
         right: 14px;
         bottom: auto;
-        width: 44px;
+        width: auto;
         height: 44px;
         min-width: 44px;
+        max-width: 44px;
+        overflow: hidden;
+        white-space: nowrap;
         opacity: .96;
+        animation: ask-chip-expand 5s ease-in-out infinite;
+      }
+
+      .corner-btn span {
+        animation: ask-chip-label 5s ease-in-out infinite;
+      }
+
+      .corner-btn:hover,
+      .corner-btn:focus-visible {
+        animation: none;
+        max-width: 12rem;
+        padding-left: 12px;
+        padding-right: 14px;
+        gap: 8px;
+      }
+
+      .corner-btn:hover span,
+      .corner-btn:focus-visible span {
+        animation: none;
+        max-width: 10rem;
+        opacity: 1;
+      }
+
+      body:has(dialog[open]) .corner-btn,
+      body:has(dialog[open]) .corner-btn span {
+        animation: none;
       }
 
       .corner-btn:disabled { display: none; }
@@ -5429,6 +5467,37 @@
 
       .scroll-hint-chevron {
         animation: none !important;
+      }
+
+      .corner-btn,
+      .corner-btn span {
+        animation: none !important;
+      }
+    }
+
+    @keyframes ask-chip-expand {
+      0%, 56%, 100% {
+        max-width: 44px;
+        padding-left: 0;
+        padding-right: 0;
+        gap: 0;
+      }
+      64%, 88% {
+        max-width: 12rem;
+        padding-left: 12px;
+        padding-right: 14px;
+        gap: 8px;
+      }
+    }
+
+    @keyframes ask-chip-label {
+      0%, 56%, 100% {
+        max-width: 0;
+        opacity: 0;
+      }
+      64%, 88% {
+        max-width: 10rem;
+        opacity: 1;
       }
     }
 
