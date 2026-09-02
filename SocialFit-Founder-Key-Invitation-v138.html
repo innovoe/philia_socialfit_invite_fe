@@ -5597,6 +5597,75 @@
       text-transform: uppercase;
     }
 
+    body.is-locked .keyhole {
+      animation: keyhole-beckon 2.6s ease-in-out infinite;
+    }
+
+    body.is-locked .keyhole-jewel {
+      animation: keyhole-jewel-glow 2.6s ease-in-out infinite;
+    }
+
+    body.is-locked .invitation-lock:hover .keyhole,
+    body.is-locked .invitation-lock:focus-visible .keyhole {
+      animation: none;
+      transform: translateY(-3px) scale(1.025);
+    }
+
+    .keyhole-click-me {
+      display: block;
+      margin-top: 16px;
+      opacity: 0;
+      transform: translateY(8px);
+      color: rgba(245, 241, 231, .88);
+      font: 600 .68rem/1.2 Montserrat, Inter, system-ui, sans-serif;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      pointer-events: none;
+    }
+
+    body.is-locked .keyhole-click-me {
+      animation: keyhole-click-me-in .55s ease 4s forwards;
+    }
+
+    @keyframes keyhole-beckon {
+      0%, 100% {
+        transform: translateY(0) scale(1);
+        filter:
+          drop-shadow(0 19px 29px rgba(0, 0, 0, .38))
+          drop-shadow(0 3px 1px rgba(255, 255, 255, .09))
+          drop-shadow(0 0 0 rgba(99, 197, 244, 0));
+      }
+      50% {
+        transform: translateY(-6px) scale(1.05);
+        filter:
+          drop-shadow(0 24px 32px rgba(0, 0, 0, .42))
+          drop-shadow(0 3px 1px rgba(255, 255, 255, .12))
+          drop-shadow(0 0 16px rgba(99, 197, 244, .38));
+      }
+    }
+
+    @keyframes keyhole-jewel-glow {
+      0%, 100% {
+        opacity: .86;
+        filter: drop-shadow(0 0 5px rgba(99, 197, 244, .42));
+      }
+      50% {
+        opacity: 1;
+        filter: drop-shadow(0 0 12px rgba(99, 197, 244, .92));
+      }
+    }
+
+    @keyframes keyhole-click-me-in {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     .right {
       transition: background-color .62s ease;
     }
@@ -5661,6 +5730,17 @@
 
       .scroll-hint-chevron {
         animation: none !important;
+      }
+
+      body.is-locked .keyhole,
+      body.is-locked .keyhole-jewel {
+        animation: none !important;
+      }
+
+      body.is-locked .keyhole-click-me {
+        animation: none !important;
+        opacity: 1;
+        transform: none;
       }
 
       .corner-btn,
@@ -5743,6 +5823,11 @@
         pointer-events: auto;
         cursor: pointer;
         touch-action: manipulation;
+      }
+
+      body.is-locked .invitation-lock .keyhole-click-me {
+        pointer-events: auto;
+        cursor: pointer;
       }
 
       body.is-unlock-complete .left {
@@ -8549,6 +8634,7 @@
           <circle class="keyhole-jewel" cx="69" cy="18" r="1.5"/>
         </svg>
         <span class="lock-instruction">Unlock with your Founder Key</span>
+        <span class="keyhole-click-me" aria-hidden="true">Click me</span>
       </button>
 
       <div class="experience" id="invitationExperience" aria-hidden="true">
