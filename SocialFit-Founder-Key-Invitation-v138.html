@@ -5743,6 +5743,10 @@
         transform: none;
       }
 
+      #interestDialog .dialog-scroll-fade::after {
+        animation: none !important;
+      }
+
       .corner-btn,
       .corner-btn span {
         animation: none !important;
@@ -7530,14 +7534,22 @@
       line-height: 1.62;
     }
 
+    body.dialog-open {
+      overflow: hidden;
+    }
+
     /* The final application opens as a companion porcelain document. */
     #interestDialog {
-      position: relative;
+      position: fixed;
+      inset: 0;
       isolation: isolate;
       flex-direction: column;
       width: min(680px, calc(100vw - 32px));
-      max-height: min(760px, calc(100vh - 32px));
+      height: min(760px, var(--interest-shell-height, calc(100dvh - 32px)));
+      max-height: min(760px, var(--interest-shell-height, calc(100dvh - 32px)));
+      margin: auto;
       overflow: hidden;
+      outline: none;
       padding: 14px;
       border: 1px solid rgba(57, 51, 44, .54);
       border-radius: 4px;
@@ -7550,6 +7562,7 @@
         0 0 0 1px rgba(255, 255, 255, .68),
         inset 0 0 0 5px rgba(255, 255, 255, .28),
         inset 0 0 0 6px rgba(89, 76, 61, .13);
+      transform: none;
     }
 
     #interestDialog[open] {
@@ -7580,13 +7593,60 @@
       z-index: 1;
       flex: 1;
       min-height: 0;
+      overflow-x: hidden;
       overflow-y: auto;
       overscroll-behavior: contain;
-      padding: 28px 30px 26px;
+      touch-action: pan-y;
+      -webkit-overflow-scrolling: touch;
+      padding: 28px 30px 64px;
       background: #ece5d8;
       background-image:
         radial-gradient(circle at 82% 5%, rgba(255, 255, 255, .55), transparent 28%),
         linear-gradient(141deg, #fcf9f1, #ece5d8);
+    }
+
+    #interestDialog .dialog-scroll-fade {
+      position: absolute;
+      left: 14px;
+      right: 14px;
+      bottom: 14px;
+      z-index: 3;
+      height: 92px;
+      pointer-events: none;
+      background: linear-gradient(180deg, rgba(236, 229, 216, 0) 0%, #ece5d8 58%);
+      opacity: 1;
+      visibility: visible;
+      transition: opacity .22s ease, visibility .22s ease;
+    }
+
+    #interestDialog .dialog-scroll-fade::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: 16px;
+      width: 8px;
+      height: 8px;
+      border-right: 1.5px solid rgba(48, 43, 38, .52);
+      border-bottom: 1.5px solid rgba(48, 43, 38, .52);
+      transform: translateX(-50%) rotate(45deg);
+      animation: interest-scroll-chevron 1.35s ease-in-out infinite;
+    }
+
+    #interestDialog.is-scrolled-end .dialog-scroll-fade,
+    #interestDialog.is-short-content .dialog-scroll-fade {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    #interestDialog.is-scrolled-end .dialog-scroll-fade::after,
+    #interestDialog.is-short-content .dialog-scroll-fade::after {
+      animation: none;
+      opacity: 0;
+    }
+
+    @keyframes interest-scroll-chevron {
+      0%, 100% { transform: translateX(-50%) translateY(0) rotate(45deg); opacity: .55; }
+      50% { transform: translateX(-50%) translateY(4px) rotate(45deg); opacity: 1; }
     }
 
     #interestDialog .dialog-top {
@@ -7939,10 +7999,13 @@
       }
 
       #interestDialog {
-        width: 100vw;
-        max-height: min(94dvh, 840px);
+        inset: 0;
+        width: 100%;
+        height: var(--interest-shell-height, 100dvh);
+        max-height: var(--interest-shell-height, 100dvh);
+        margin: 0;
         padding: 10px;
-        border-radius: 5px 5px 0 0;
+        border-radius: 12px 12px 0 0;
       }
 
       #interestDialog::after {
@@ -7953,7 +8016,14 @@
       }
 
       #interestDialog .dialog-inner {
-        padding: 19px 14px calc(15px + env(safe-area-inset-bottom));
+        padding: 19px 14px calc(72px + env(safe-area-inset-bottom, 0px));
+      }
+
+      #interestDialog .dialog-scroll-fade {
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        height: 108px;
       }
 
       #interestDialog .dialog-top {
@@ -9000,6 +9070,7 @@
         </div>
       </div>
     </div>
+    <div class="dialog-scroll-fade" aria-hidden="true"></div>
   </dialog>
 
   <script>
@@ -9308,11 +9379,90 @@
       configureMobileSteps();
       updateInsightGate();
 
+      const interestDialog = document.getElementById("interestDialog");
+      const interestInner = interestDialog?.querySelector(".dialog-inner");
+      let pageScrollY = 0;
+
+      const pageHasOpenDialog = () => Array.from(dialogs).some((dialog) => dialog.open);
+
+      const lockPageScroll = () => {
+        if (document.body.classList.contains("dialog-open")) return;
+        pageScrollY = window.scrollY;
+        document.body.classList.add("dialog-open");
+        document.body.style.position = "fixed";
+        document.body.style.top = `-${pageScrollY}px`;
+        document.body.style.left = "0";
+        document.body.style.right = "0";
+        document.body.style.width = "100%";
+        document.body.style.overflow = "hidden";
+      };
+
+      const unlockPageScroll = () => {
+        if (pageHasOpenDialog()) return;
+        document.body.classList.remove("dialog-open");
+        document.body.style.position = "";
+        document.body.style.top = "";
+        document.body.style.left = "";
+        document.body.style.right = "";
+        document.body.style.width = "";
+        document.body.style.overflow = "";
+        window.scrollTo(0, pageScrollY);
+      };
+
+      const fitInterestDialog = () => {
+        if (!interestDialog?.open) return;
+        const vv = window.visualViewport;
+        const height = Math.round(vv?.height || window.innerHeight);
+        const offsetTop = Math.round(vv?.offsetTop || 0);
+        interestDialog.style.setProperty("--interest-shell-height", `${height}px`);
+        if (window.matchMedia("(max-width: 600px)").matches) {
+          interestDialog.style.top = `${offsetTop}px`;
+          interestDialog.style.bottom = "auto";
+          interestDialog.style.left = "0";
+          interestDialog.style.right = "0";
+          interestDialog.style.transform = "none";
+        } else {
+          interestDialog.style.top = "";
+          interestDialog.style.bottom = "";
+          interestDialog.style.left = "";
+          interestDialog.style.right = "";
+          interestDialog.style.transform = "none";
+        }
+      };
+
+      const updateInterestFade = () => {
+        if (!interestDialog?.open || !interestInner) return;
+        const canScroll = interestInner.scrollHeight > interestInner.clientHeight + 8;
+        const remaining = interestInner.scrollHeight - interestInner.scrollTop - interestInner.clientHeight;
+        interestDialog.classList.toggle("is-scrolled-end", !canScroll || remaining < 28);
+        interestDialog.classList.toggle("is-short-content", !canScroll);
+      };
+
+      if (interestInner) {
+        interestInner.addEventListener("scroll", updateInterestFade, { passive: true });
+        new ResizeObserver(() => {
+          if (interestDialog?.open) updateInterestFade();
+        }).observe(interestInner);
+      }
+      const syncInterestChrome = () => {
+        fitInterestDialog();
+        window.requestAnimationFrame(updateInterestFade);
+      };
+      window.addEventListener("resize", syncInterestChrome);
+      window.visualViewport?.addEventListener("resize", syncInterestChrome);
+      window.visualViewport?.addEventListener("scroll", fitInterestDialog);
+
       document.querySelectorAll("[data-open-dialog]").forEach((button) => {
         button.addEventListener("click", () => {
           if (button.disabled) return;
           const dialog = document.getElementById(button.dataset.openDialog);
-          if (dialog && !dialog.open) dialog.showModal();
+          if (!dialog || dialog.open) return;
+          dialog.showModal();
+          lockPageScroll();
+          if (dialog.id === "interestDialog" && interestInner) {
+            interestInner.scrollTop = 0;
+            syncInterestChrome();
+          }
         });
       });
 
@@ -9322,6 +9472,18 @@
 
       dialogs.forEach((dialog) => {
         dialog.addEventListener("cancel", (event) => event.preventDefault());
+        dialog.addEventListener("close", () => {
+          if (dialog.id === "interestDialog") {
+            dialog.style.top = "";
+            dialog.style.bottom = "";
+            dialog.style.left = "";
+            dialog.style.right = "";
+            dialog.style.transform = "none";
+            dialog.style.removeProperty("--interest-shell-height");
+            dialog.classList.remove("is-scrolled-end", "is-short-content");
+          }
+          unlockPageScroll();
+        });
       });
 
       const createApplicationReference = () => {
@@ -9398,6 +9560,10 @@
           configureWhatsappDelivery(reference);
           interestContent.style.display = "none";
           successState.classList.add("visible");
+          if (interestInner) {
+            interestInner.scrollTop = 0;
+            window.requestAnimationFrame(syncInterestChrome);
+          }
         } catch (error) {
           showFormError(error.message || "We could not save your application. Please try again.");
           submitButton.disabled = false;
